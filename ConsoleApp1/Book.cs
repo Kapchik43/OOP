@@ -1,77 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConsoleApp1
 {
-	public class Book
+	public class Book : EducationalMaterial
 	{
 		private string _isbn;
-		private string _title;
-		private string _author;
-		private int _year;
-		private bool _status;
+		private int _pages;
 
 		public string isbn
 		{
 			get => _isbn;
 			set => _isbn = value;
 		}
-		public string title
+
+		public int pages
 		{
-			get => _title;
-			set => _title = value;
+			get => _pages;
+			set => _pages = value;
 		}
 
-		public string author
-		{
-			get => _author;
-			set => _author = value;
-		}
-
-		public int year
-		{
-			get => _year;
-			set => _year = value;
-		}
-		public bool status => _status;
-		public Book(string isbn, string title, string author, int year, bool status)
+		public Book(string isbn, string title, string author, int pages) : base(title, author)
 		{
 			_isbn = isbn;
-			_title = title;
-			_author = author;
-			_year = year;
-			_status = status;
+			_pages = pages;
 		}
-		public bool Borrow()
+
+		public override void print()
 		{
-			if (_status)
-			{
-				_status = false;
-				return true;
-			}
-			return false;
-		}
-		public bool Return()
-		{
-			if (_status == false)
-			{
-				_status = true;
-				return true;
-			}
-			return false;
-		}
-		public void print()
-		{
+			base.print();
 			Console.WriteLine($"isbn: {isbn}");
-			Console.WriteLine($"title: {title}");
-			Console.WriteLine($"author: {author}");
-			Console.WriteLine($"year: {year}");
-			Console.WriteLine($"status: {status}");
+			Console.WriteLine($"pages: {pages}");
 			Console.WriteLine(new string('-', 25));
+		}
+
+		public override void DisplayContent()
+		{
+			Console.WriteLine($"[BOOK] {title} by {_author}");
 		}
 	}
 }

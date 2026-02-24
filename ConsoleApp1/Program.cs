@@ -1,12 +1,14 @@
-﻿using ConsoleApp1;
+﻿using System.Collections.Generic;
+using ConsoleApp1;
 
-string isbn = "0121234324", title = "OOP", author = "Amankulov";
-int year = 2026;
-bool status = true;
+List<EducationalMaterial> materials = new List<EducationalMaterial>();
 
-Book b = new Book(isbn, title, author, year, status);
-b.print();
-b.Borrow();
-b.print();
-b.Return();
-b.print();
+materials.Add(new Book("0121234324", "OOP Book", "Amankulov", 320));
+materials.Add(new VideoCourse("C# Course", "Petrov", 95, "https://example.com"));
+materials.Add(new Article("Inheritance vs Composition", "Smirnov", "SE Notes", 2024));
+
+foreach (EducationalMaterial m in materials)
+{
+	m.DisplayContent();
+    m.print();
+}
