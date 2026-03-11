@@ -1,41 +1,42 @@
-﻿using System;
+using System;
 
 namespace ConsoleApp1
 {
-	public class Book : EducationalMaterial
-	{
-		private string _isbn;
-		private int _pages;
+    public class Book : EducationalMaterial
+    {
+        private int _pages;
+        private string _isbn;
 
-		public string isbn
-		{
-			get => _isbn;
-			set => _isbn = value;
-		}
+        public int Pages
+        {
+            get => _pages;
+            set => _pages = value;
+        }
 
-		public int pages
-		{
-			get => _pages;
-			set => _pages = value;
-		}
+        public string ISBN
+        {
+            get => _isbn;
+            set => _isbn = value;
+        }
 
-		public Book(string isbn, string title, string author, int pages) : base(title, author)
-		{
-			_isbn = isbn;
-			_pages = pages;
-		}
+        public Book(string title, string author, int pages, string isbn)
+            : base(title, author)
+        {
+            _pages = pages;
+            _isbn = isbn;
+        }
 
-		public override void print()
-		{
-			base.print();
-			Console.WriteLine($"isbn: {isbn}");
-			Console.WriteLine($"pages: {pages}");
-			Console.WriteLine(new string('-', 25));
-		}
+        public override void Print()
+        {
+            base.Print();
+            Console.WriteLine($"Страницы: {Pages}");
+            Console.WriteLine($"ISBN: {ISBN}");
+            Console.WriteLine(new string('-', 30));
+        }
 
-		public override void DisplayContent()
-		{
-			Console.WriteLine($"[BOOK] {title} by {_author}");
-		}
-	}
+        public override void DisplayContent()
+        {
+            Console.WriteLine($"[КНИГА] {Title} — {Author}, {Pages} стр., ISBN: {ISBN}");
+        }
+    }
 }
