@@ -36,7 +36,7 @@ namespace ConsoleApp1
 
         public override void DisplayContent()
         {
-            Console.WriteLine($"[ВИДЕОКУРС] {Title} — {Author}, {Duration} мин., ссылка: {Link}");
+            Console.WriteLine($"[VideoCourse] {Title}, {Author}, {Duration}, {Link}");
         }
     }
 }

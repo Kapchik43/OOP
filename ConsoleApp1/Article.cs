@@ -36,7 +36,7 @@ namespace ConsoleApp1
 
         public override void DisplayContent()
         {
-            Console.WriteLine($"[СТАТЬЯ] {Title} — {Author}, журнал: {Journal}, год: {Year}");
+            Console.WriteLine($"[Article] {Title}, {Author}, {Journal}, {Year}");
         }
     }
 }

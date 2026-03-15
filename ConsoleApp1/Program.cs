@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp1
 {
@@ -8,19 +9,15 @@ namespace ConsoleApp1
         {
             Library<EducationalMaterial> library = new Library<EducationalMaterial>();
 
-            library.AddMaterial(new Book("Чистый код", "Роберт Мартин", 464, "978-5-496-00487-9"));
-            library.AddMaterial(new VideoCourse("Основы C#", "Иван Петров", 95, "https://example.com/csharp-course"));
-            library.AddMaterial(new Article("ООП в современных приложениях", "Анна Смирнова", "Программирование сегодня", 2024));
+            library.AddMaterial(new Book("книга", "автор1", 464, "9785496004879"));
+            library.AddMaterial(new VideoCourse("видеокурс", "автор2", 95, "ссылка"));
+            library.AddMaterial(new Article("статья", "автор3", "журнал", 2026));
 
-            Console.WriteLine("Содержимое всех материалов:");
+            Console.WriteLine("ShowAllContents():");
             library.ShowAllContents();
 
-            Console.WriteLine();
-            Console.WriteLine("Полная информация о материалах:");
-            library.PrintAll();
-
-            Console.WriteLine("Поиск материала по названию:");
-            EducationalMaterial? foundMaterial = library.FindByTitle("Основы C#");
+            Console.WriteLine("FindByTitle():");
+            EducationalMaterial? foundMaterial = library.FindByTitle("книга");
 
             if (foundMaterial != null)
             {
@@ -28,10 +25,10 @@ namespace ConsoleApp1
             }
             else
             {
-                Console.WriteLine("Материал не найден.");
+                Console.WriteLine("материал не найден");
             }
 
-            Console.WriteLine($"Всего материалов: {Library<EducationalMaterial>.MaterialsCount}");
+            Console.WriteLine($"всего материалов: {Library<EducationalMaterial>.MaterialsCount}");
         }
     }
 }

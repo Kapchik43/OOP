@@ -36,7 +36,7 @@ namespace ConsoleApp1
 
         public override void DisplayContent()
         {
-            Console.WriteLine($"[КНИГА] {Title} — {Author}, {Pages} стр., ISBN: {ISBN}");
+            Console.WriteLine($"[Book] {Title}, {Author}, {Pages}, {ISBN}");
         }
     }
 }
