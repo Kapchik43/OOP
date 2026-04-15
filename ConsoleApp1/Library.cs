@@ -36,5 +36,9 @@ namespace ConsoleApp1
                 material.DisplayContent();
             }
         }
+        public IEnumerable<T> GetAllMaterials()
+        {
+            return _materials;
+        }
     }
 }

@@ -38,5 +38,11 @@ namespace ConsoleApp1
         {
             Console.WriteLine($"[VideoCourse] {Title}, {Author}, {Duration}, {Link}");
         }
+
+        public static VideoCourse operator ++(VideoCourse course)
+        {
+            course.Duration += 10;
+            return course;
+        }
     }
 }

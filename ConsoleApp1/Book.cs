@@ -38,5 +38,15 @@ namespace ConsoleApp1
         {
             Console.WriteLine($"[Book] {Title}, {Author}, {Pages}, {ISBN}");
         }
+
+        public static bool operator >(Book left, Book right)
+        {
+            return left.Pages > right.Pages;
+        }
+
+        public static bool operator <(Book left, Book right)
+        {
+            return left.Pages < right.Pages;
+        }
     }
 }
