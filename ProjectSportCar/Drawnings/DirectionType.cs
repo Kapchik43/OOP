@@ -1,4 +1,4 @@
-﻿namespace ProjectCar;
+﻿namespace ProjectCar.Drawnings;
 
 /// <summary>
 /// Направление перемещения
