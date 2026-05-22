@@ -1,14 +1,19 @@
 ﻿namespace ProjectCar;
 
 /// <summary>
-/// Форма для работы с коллекцией автомобилей
+/// Форма для работы с коллекцией автомобилей и хранилищем компаний
 /// </summary>
 public partial class FormCarCollection : Form
 {
     /// <summary>
-    /// Автопарк
+    /// Текущая выбранная компания
     /// </summary>
-    private AbstractCompany _autoPark;
+    private AbstractCompany? _company;
+
+    /// <summary>
+    /// Хранилище компаний
+    /// </summary>
+    private readonly StorageCompanies _storageCompanies;
 
     /// <summary>
     /// Конструктор
@@ -17,12 +22,10 @@ public partial class FormCarCollection : Form
     {
         InitializeComponent();
 
-        _autoPark = new AutoPark(
-            pictureBox.Width,
-            pictureBox.Height,
-            new MassiveGenericObjects<DrawningCar>());
+        _storageCompanies = new StorageCompanies();
+        _company = null;
 
-        RefreshPicture();
+        ClearPicture();
     }
 
     /// <summary>
@@ -42,10 +45,20 @@ public partial class FormCarCollection : Form
     }
 
     /// <summary>
-    /// Создание объекта и добавление его в коллекцию
+    /// Создание объекта и добавление его в выбранную компанию
     /// </summary>
     private void CreateAndAddObjectToCollection(string type)
     {
+        if (_company is null)
+        {
+            MessageBox.Show(
+                "Сначала создайте и выберите компанию",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            return;
+        }
+
         Random random = new();
         DrawningCar car;
 
@@ -72,12 +85,12 @@ public partial class FormCarCollection : Form
                 return;
         }
 
-        int countBefore = _autoPark.CountObjects;
-        _autoPark = _autoPark + car;
+        int countBefore = _company.CountObjects;
+        _company = _company + car;
 
-        if (_autoPark.CountObjects > countBefore)
+        if (_company.CountObjects > countBefore)
         {
-            MessageBox.Show("Объект добавлен в автопарк");
+            MessageBox.Show("Объект добавлен в выбранную компанию");
             RefreshPicture();
         }
         else
@@ -102,10 +115,20 @@ public partial class FormCarCollection : Form
     }
 
     /// <summary>
-    /// Удаление объекта по позиции
+    /// Удаление объекта по позиции из выбранной компании
     /// </summary>
     private void ButtonRemoveCar_Click(object sender, EventArgs e)
     {
+        if (_company is null)
+        {
+            MessageBox.Show(
+                "Сначала выберите компанию",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            return;
+        }
+
         if (!int.TryParse(maskedTextBoxPosition.Text.Trim(), out int position))
         {
             MessageBox.Show("Введите позицию объекта");
@@ -121,10 +144,10 @@ public partial class FormCarCollection : Form
             return;
         }
 
-        int countBefore = _autoPark.CountObjects;
-        _autoPark = _autoPark - position;
+        int countBefore = _company.CountObjects;
+        _company = _company - position;
 
-        if (_autoPark.CountObjects < countBefore)
+        if (_company.CountObjects < countBefore)
         {
             MessageBox.Show("Объект удален");
             RefreshPicture();
@@ -136,11 +159,21 @@ public partial class FormCarCollection : Form
     }
 
     /// <summary>
-    /// Передача случайного объекта на первую форму
+    /// Передача случайного объекта из выбранной компании на форму тестирования
     /// </summary>
     private void ButtonGoToCheck_Click(object sender, EventArgs e)
     {
-        DrawningCar? car = _autoPark.GetRandomObject();
+        if (_company is null)
+        {
+            MessageBox.Show(
+                "Сначала выберите компанию",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            return;
+        }
+
+        DrawningCar? car = _company.GetRandomObject();
 
         if (car is null)
         {
@@ -156,7 +189,7 @@ public partial class FormCarCollection : Form
     }
 
     /// <summary>
-    /// Обновление изображения автопарка
+    /// Обновление изображения выбранной компании
     /// </summary>
     private void ButtonRefresh_Click(object sender, EventArgs e)
     {
@@ -164,12 +197,163 @@ public partial class FormCarCollection : Form
     }
 
     /// <summary>
-    /// Перерисовка автопарка
+    /// Добавление новой компании в хранилище
+    /// </summary>
+    private void ButtonCompanyAdd_Click(object sender, EventArgs e)
+    {
+        CollectionType collectionType = GetSelectedCollectionType();
+
+        if (string.IsNullOrWhiteSpace(textBoxCompanyName.Text) ||
+            collectionType == CollectionType.None)
+        {
+            MessageBox.Show(
+                "Не все данные заполнены",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            return;
+        }
+
+        bool result = _storageCompanies.AddCompany(
+            textBoxCompanyName.Text,
+            collectionType,
+            pictureBox.Width,
+            pictureBox.Height);
+
+        if (!result)
+        {
+            MessageBox.Show(
+                "Компания с таким именем уже существует или тип коллекции не выбран",
+                "Ошибка",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+            return;
+        }
+
+        RefreshListBoxItems();
+
+        if (listBoxCompanies.Items.Count > 0)
+        {
+            listBoxCompanies.SelectedIndex = listBoxCompanies.Items.Count - 1;
+        }
+    }
+
+    /// <summary>
+    /// Удаление выбранной компании из хранилища
+    /// </summary>
+    private void ButtonCompanyDel_Click(object sender, EventArgs e)
+    {
+        if (listBoxCompanies.SelectedItem is null)
+        {
+            MessageBox.Show("Компания не выбрана");
+            return;
+        }
+
+        string companyName = listBoxCompanies.SelectedItem.ToString() ?? string.Empty;
+
+        if (MessageBox.Show(
+                "Удалить компанию?",
+                "Удаление",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question) == DialogResult.No)
+        {
+            return;
+        }
+
+        if (_storageCompanies.DelCompany(companyName))
+        {
+            _company = null;
+            RefreshListBoxItems();
+            ClearPicture();
+            MessageBox.Show("Компания удалена");
+        }
+        else
+        {
+            MessageBox.Show("Не удалось удалить компанию");
+        }
+    }
+
+    /// <summary>
+    /// Выбор компании из ListBox
+    /// </summary>
+    private void ListBoxCompanies_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (listBoxCompanies.SelectedItem is null)
+        {
+            return;
+        }
+
+        string companyName = listBoxCompanies.SelectedItem.ToString() ?? string.Empty;
+        AbstractCompany? company = _storageCompanies[companyName];
+
+        if (company is null)
+        {
+            MessageBox.Show("Компания не найдена");
+            return;
+        }
+
+        _company = company;
+        RefreshPicture();
+    }
+
+    /// <summary>
+    /// Получение выбранного типа коллекции
+    /// </summary>
+    private CollectionType GetSelectedCollectionType()
+    {
+        if (radioButtonMassive.Checked)
+        {
+            return CollectionType.Massive;
+        }
+
+        if (radioButtonList.Checked)
+        {
+            return CollectionType.List;
+        }
+
+        if (radioButtonLinkedList.Checked)
+        {
+            return CollectionType.LinkedList;
+        }
+
+        return CollectionType.None;
+    }
+
+    /// <summary>
+    /// Обновление списка компаний
+    /// </summary>
+    private void RefreshListBoxItems()
+    {
+        listBoxCompanies.Items.Clear();
+
+        foreach (string companyName in _storageCompanies.StorageKeys)
+        {
+            if (!string.IsNullOrWhiteSpace(companyName))
+            {
+                listBoxCompanies.Items.Add(companyName);
+            }
+        }
+
+        ClearPicture();
+    }
+
+    /// <summary>
+    /// Перерисовка выбранной компании
     /// </summary>
     private void RefreshPicture()
     {
         Image? oldImage = pictureBox.Image;
-        pictureBox.Image = _autoPark.Show();
+        pictureBox.Image = _company?.Show();
+        oldImage?.Dispose();
+    }
+
+    /// <summary>
+    /// Очистка PictureBox
+    /// </summary>
+    private void ClearPicture()
+    {
+        Image? oldImage = pictureBox.Image;
+        pictureBox.Image = null;
         oldImage?.Dispose();
     }
 }
