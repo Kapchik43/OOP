@@ -16,6 +16,37 @@ public partial class FormCar : Form
 
         _canvas = new CanvasForCar(pictureBoxSportCar.Width, pictureBoxSportCar.Height);
         _checkBordersState = DirectionType.None;
+        _templateMovement = null;
+
+        comboBoxPointOfDestination.Items.Clear();
+        comboBoxPointOfDestination.Items.AddRange(TemplateMovementFactory.Values);
+    }
+
+    /// <summary>
+    /// Получение автомобиля из формы коллекции
+    /// </summary>
+    public void SetDrawningCar(DrawningCar car)
+    {
+        InsertCarObject(car);
+    }
+
+    /// <summary>
+    /// Добавление автомобиля на полотно
+    /// </summary>
+    private void InsertCarObject(DrawningCar car, Random? random = null)
+    {
+        random ??= new Random();
+
+        if (_canvas.InsertCar(car))
+        {
+            _canvas.SetCarPosition(random.Next(10, 100), random.Next(10, 100));
+
+            _templateMovement = null;
+            comboBoxPointOfDestination.Enabled = true;
+            comboBoxPointOfDestination.SelectedIndex = -1;
+
+            Draw();
+        }
     }
 
     private void Draw()
@@ -76,16 +107,7 @@ public partial class FormCar : Form
             return;
         }
 
-        if (_canvas.InsertCar(drawningCar))
-        {
-            _canvas.SetCarPosition(random.Next(10, 100), random.Next(10, 100));
-
-            _templateMovement = null;
-            comboBoxPointOfDestination.Enabled = true;
-            comboBoxPointOfDestination.SelectedIndex = -1;
-
-            Draw();
-        }
+        InsertCarObject(drawningCar, random);
     }
 
     private void ButtonMove_Click(object sender, EventArgs e)
@@ -165,12 +187,7 @@ public partial class FormCar : Form
             return;
         }
 
-        _templateMovement = comboBoxPointOfDestination.SelectedIndex switch
-        {
-            0 => new MoveToCenter(),
-            1 => new MoveToRightDownBorder(),
-            _ => null
-        };
+        _templateMovement = TemplateMovementFactory.CreateTemplateMovement(comboBoxPointOfDestination.Text);
 
         if (_templateMovement is null)
         {
