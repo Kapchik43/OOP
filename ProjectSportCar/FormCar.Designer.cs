@@ -135,7 +135,6 @@
             comboBoxPointOfDestination.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxPointOfDestination.Enabled = false;
             comboBoxPointOfDestination.FormattingEnabled = true;
-            comboBoxPointOfDestination.Items.AddRange(new object[] { "К центру", "К правом нижнему краю" });
             comboBoxPointOfDestination.Location = new Point(779, 13);
             comboBoxPointOfDestination.Name = "comboBoxPointOfDestination";
             comboBoxPointOfDestination.Size = new Size(125, 23);
