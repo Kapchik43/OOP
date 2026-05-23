@@ -1,27 +1,30 @@
 ﻿namespace ProjectCar;
 
 /// <summary>
-/// Фабрика по созданию стратегии перемещения
+/// Фабрика по получению стратегии перемещения
 /// </summary>
 public static class TemplateMovementFactory
 {
     /// <summary>
-    /// Значения для выпадающего списка
+    /// Словарь шаблонов стратегий перемещения
     /// </summary>
-    public static string[] Values => ["К центру", "К правому нижнему краю"];
+    private static readonly Dictionary<string, BaseTemplateMovement> _templates = new()
+    {
+        { "К центру", new MoveToCenter() },
+        { "К правому нижнему краю", new MoveToRightDownBorder() }
+    };
 
     /// <summary>
-    /// Создание стратегии перемещения по выбранному значению
+    /// Набор возможных значений для ComboBox
+    /// </summary>
+    public static string[] Values => [.. _templates.Keys];
+
+    /// <summary>
+    /// Получение стратегии перемещения по выбранному значению
     /// </summary>
     public static BaseTemplateMovement? CreateTemplateMovement(string value)
     {
-        return value switch
-        {
-            "К центру" => new MoveToCenter(),
-            "К правому нижнему краю" => new MoveToRightDownBorder(),
-            "К правом нижнему краю" => new MoveToRightDownBorder(),
-            "К краю" => new MoveToRightDownBorder(),
-            _ => null
-        };
+        _templates.TryGetValue(value, out BaseTemplateMovement? template);
+        return template;
     }
 }

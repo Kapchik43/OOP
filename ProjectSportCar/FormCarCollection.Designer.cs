@@ -36,8 +36,18 @@
             buttonAddDumpTruck = new Button();
             buttonRemoveCar = new Button();
             maskedTextBoxPosition = new MaskedTextBox();
+            panelStorage = new Panel();
+            labelCompanyName = new Label();
+            textBoxCompanyName = new TextBox();
+            radioButtonMassive = new RadioButton();
+            radioButtonList = new RadioButton();
+            radioButtonLinkedList = new RadioButton();
+            buttonCompanyAdd = new Button();
+            buttonCompanyDel = new Button();
+            listBoxCompanies = new ListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             groupBoxTools.SuspendLayout();
+            panelStorage.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox
@@ -77,7 +87,7 @@
             // 
             // buttonAddCar
             // 
-            buttonAddCar.Location = new Point(6, 22);
+            buttonAddCar.Location = new Point(6, 335);
             buttonAddCar.Name = "buttonAddCar";
             buttonAddCar.Size = new Size(168, 38);
             buttonAddCar.TabIndex = 0;
@@ -97,7 +107,7 @@
             // 
             // buttonAddDumpTruck
             // 
-            buttonAddDumpTruck.Location = new Point(6, 66);
+            buttonAddDumpTruck.Location = new Point(6, 379);
             buttonAddDumpTruck.Name = "buttonAddDumpTruck";
             buttonAddDumpTruck.Size = new Size(168, 38);
             buttonAddDumpTruck.TabIndex = 2;
@@ -107,7 +117,7 @@
             // 
             // buttonRemoveCar
             // 
-            buttonRemoveCar.Location = new Point(6, 173);
+            buttonRemoveCar.Location = new Point(6, 463);
             buttonRemoveCar.Name = "buttonRemoveCar";
             buttonRemoveCar.Size = new Size(162, 38);
             buttonRemoveCar.TabIndex = 4;
@@ -117,16 +127,111 @@
             // 
             // maskedTextBoxPosition
             // 
-            maskedTextBoxPosition.Location = new Point(6, 144);
+            maskedTextBoxPosition.Location = new Point(6, 434);
             maskedTextBoxPosition.Name = "maskedTextBoxPosition";
             maskedTextBoxPosition.Size = new Size(162, 23);
             maskedTextBoxPosition.TabIndex = 3;
+            // 
+            // panelStorage
+            // 
+            panelStorage.Controls.Add(buttonCompanyDel);
+            panelStorage.Controls.Add(listBoxCompanies);
+            panelStorage.Controls.Add(labelCompanyName);
+            panelStorage.Controls.Add(textBoxCompanyName);
+            panelStorage.Controls.Add(buttonCompanyAdd);
+            panelStorage.Controls.Add(radioButtonMassive);
+            panelStorage.Controls.Add(radioButtonLinkedList);
+            panelStorage.Controls.Add(radioButtonList);
+            panelStorage.Location = new Point(1004, 22);
+            panelStorage.Name = "panelStorage";
+            panelStorage.Size = new Size(180, 259);
+            panelStorage.TabIndex = 2;
+            // 
+            // labelCompanyName
+            // 
+            labelCompanyName.AutoSize = true;
+            labelCompanyName.Location = new Point(25, 0);
+            labelCompanyName.Name = "labelCompanyName";
+            labelCompanyName.Size = new Size(121, 15);
+            labelCompanyName.TabIndex = 0;
+            labelCompanyName.Text = "Название компании:";
+            // 
+            // textBoxCompanyName
+            // 
+            textBoxCompanyName.Location = new Point(3, 18);
+            textBoxCompanyName.Name = "textBoxCompanyName";
+            textBoxCompanyName.Size = new Size(174, 23);
+            textBoxCompanyName.TabIndex = 3;
+            // 
+            // radioButtonMassive
+            // 
+            radioButtonMassive.AutoSize = true;
+            radioButtonMassive.Location = new Point(12, 47);
+            radioButtonMassive.Name = "radioButtonMassive";
+            radioButtonMassive.Size = new Size(67, 19);
+            radioButtonMassive.TabIndex = 4;
+            radioButtonMassive.TabStop = true;
+            radioButtonMassive.Text = "Массив";
+            radioButtonMassive.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonList
+            // 
+            radioButtonList.AutoSize = true;
+            radioButtonList.Location = new Point(102, 47);
+            radioButtonList.Name = "radioButtonList";
+            radioButtonList.Size = new Size(66, 19);
+            radioButtonList.TabIndex = 5;
+            radioButtonList.TabStop = true;
+            radioButtonList.Text = "Список";
+            radioButtonList.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonLinkedList
+            // 
+            radioButtonLinkedList.AutoSize = true;
+            radioButtonLinkedList.Location = new Point(12, 72);
+            radioButtonLinkedList.Name = "radioButtonLinkedList";
+            radioButtonLinkedList.Size = new Size(128, 19);
+            radioButtonLinkedList.TabIndex = 6;
+            radioButtonLinkedList.TabStop = true;
+            radioButtonLinkedList.Text = "Связанный список";
+            radioButtonLinkedList.UseVisualStyleBackColor = true;
+            // 
+            // buttonCompanyAdd
+            // 
+            buttonCompanyAdd.Location = new Point(3, 97);
+            buttonCompanyAdd.Name = "buttonCompanyAdd";
+            buttonCompanyAdd.Size = new Size(174, 23);
+            buttonCompanyAdd.TabIndex = 7;
+            buttonCompanyAdd.Text = "Добавить компанию";
+            buttonCompanyAdd.UseVisualStyleBackColor = true;
+            // 
+            // buttonCompanyDel
+            // 
+            buttonCompanyDel.Location = new Point(3, 226);
+            buttonCompanyDel.Name = "buttonCompanyDel";
+            buttonCompanyDel.Size = new Size(174, 23);
+            buttonCompanyDel.TabIndex = 8;
+            buttonCompanyDel.Text = "Удалить компанию";
+            buttonCompanyDel.UseVisualStyleBackColor = true;
+            // 
+            // listBoxCompanies
+            // 
+            listBoxCompanies.FormattingEnabled = true;
+            listBoxCompanies.Location = new Point(3, 126);
+            listBoxCompanies.Name = "listBoxCompanies";
+            listBoxCompanies.Size = new Size(174, 94);
+            listBoxCompanies.TabIndex = 9;
+
+            buttonCompanyAdd.Click += ButtonCompanyAdd_Click;
+            buttonCompanyDel.Click += ButtonCompanyDel_Click;
+            listBoxCompanies.SelectedIndexChanged += ListBoxCompanies_SelectedIndexChanged;
             // 
             // FormCarCollection
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1184, 611);
+            Controls.Add(panelStorage);
             Controls.Add(groupBoxTools);
             Controls.Add(pictureBox);
             Name = "FormCarCollection";
@@ -134,6 +239,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             groupBoxTools.ResumeLayout(false);
             groupBoxTools.PerformLayout();
+            panelStorage.ResumeLayout(false);
+            panelStorage.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -147,5 +254,14 @@
         private Button buttonRemoveCar;
         private Button buttonGoToCheck;
         private Button buttonRefresh;
+        private Panel panelStorage;
+        private Label labelCompanyName;
+        private TextBox textBoxCompanyName;
+        private RadioButton radioButtonMassive;
+        private RadioButton radioButtonList;
+        private RadioButton radioButtonLinkedList;
+        private Button buttonCompanyAdd;
+        private Button buttonCompanyDel;
+        private ListBox listBoxCompanies;
     }
 }
